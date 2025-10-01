@@ -8,26 +8,33 @@ import '../pages/Register.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Tab.css';
 import './Mapa.css';
-import axiosInstance from '../helpers/api.js';
+
 import { useCentros } from '../hooks/useCentros.js';
 import MinimapaCentros from './MinimapaCentros.jsx';
 
 // Componente TabBar principal
 function TabBar(props) {
-  const [politicas, setPoliticas] = useState([]);
-  
-  useEffect(() => {
-    const getDatos = async () => {
-      try {
-        const politicas = await axiosInstance.get('/politica');
-        setPoliticas(politicas.data.data);
-        console.log(politicas.data.data);
-      } catch (error) {
-        console.error("Error al obtener las políticas:", error);
-      }
-    };
-    getDatos();
-  }, []);
+  // Políticas hardcodeadas para demo
+  const politicas = [
+    {
+      id: 1,
+      diaHabilitacionTurnos: 'Lunes a Viernes',
+      horaInicioTurnos: '08:00',
+      horaFinTurnos: '18:00',
+    },
+    {
+      id: 2,
+      diaHabilitacionTurnos: 'Sábados',
+      horaInicioTurnos: '09:00',
+      horaFinTurnos: '13:00',
+    },
+    {
+      id: 3,
+      diaHabilitacionTurnos: 'Domingos',
+      horaInicioTurnos: 'Cerrado',
+      horaFinTurnos: 'Cerrado',
+    },
+  ];
 
   const { inicio } = props;
   
@@ -81,7 +88,7 @@ function TabBar(props) {
               <tbody>
                 {politicas.map((politica) => (
                   <tr key={politica.id}>
-                    <td>{politica.diaHabilitacionTurnos.toString() + " días posteriores"}</td>
+                    <td>{politica.diaHabilitacionTurnos.toString()}</td>
                     <td>{politica.horaInicioTurnos}</td>
                     <td>{politica.horaFinTurnos}</td>
                   </tr>

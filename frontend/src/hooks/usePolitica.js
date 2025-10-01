@@ -1,42 +1,39 @@
-import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '../helpers/api';
+// Hardcoded demo policies for the company
+import { useState } from 'react';
 
-const getDatos = async () => {
-  try {
-    const politicas = await axiosInstance.get('/politica');
-    return politicas.data.data;
-  } catch (error) {
-    console.error('Error al obtener los datos:', error);
-  }
-};
+const demoPoliticas = [
+  {
+    id: 1,
+    diaHabilitacionTurnos: 'Lunes a Viernes',
+    horaInicioTurnos: '08:00',
+    horaFinTurnos: '18:00',
+  },
+  {
+    id: 2,
+    diaHabilitacionTurnos: 'Sábados',
+    horaInicioTurnos: '09:00',
+    horaFinTurnos: '13:00',
+  },
+  {
+    id: 3,
+    diaHabilitacionTurnos: 'Domingos',
+    horaInicioTurnos: 'Cerrado',
+    horaFinTurnos: 'Cerrado',
+  },
+];
 
 const modifyPoliticas = async (data) => {
-  const politicaData = {
-    id: data.id,
-    diaHabilitacionTurnos:
-      Number(data.diaHabilitacionTurnos) === 0
-        ? undefined
-        : Number(data.diaHabilitacionTurnos),
-    horaInicioTurnos:
-      data.horaInicioTurnos === '' ? undefined : data.horaInicioTurnos,
-    horaFinTurnos:
-      data.horaInicioTurnos === '' ? undefined : data.horaFinTurnos,
-  };
-  try {
-    await axiosInstance.put('/politica/' + politicaData.id, politicaData);
-    alert('Las politicas han sido modificadas');
-  } catch (error) {
-    console.error('Error al modificar los datos:', error);
-  }
+  // Demo: just show alert, no real update
+  alert('Las politicas han sido modificadas (demo)');
 };
 
 function usePolitica() {
-  const { data, isError, error, isLoading } = useQuery({
-    queryKey: ['politica'],
-    queryFn: getDatos,
-  });
+  const [politicas] = useState(demoPoliticas);
+  const [isLoading] = useState(false);
+  const [isError] = useState(false);
+  const [error] = useState(null);
   return {
-    politicas: data,
+    politicas,
     isError,
     error,
     isLoading,
