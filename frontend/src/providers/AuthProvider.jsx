@@ -38,24 +38,51 @@ export const AuthProvider = ({ children }) => {
     return !!getUser(localStorage.getItem('token'))
   }
 
+  // Demo users (hardcoded)
+  const demoUsers = [
+    {
+      id: 1,
+      email: "demo@mail.com",
+      password: "demo123",
+      role: "user",
+      paciente: { nombre: "Demo", apellido: "User", dni: "12345678" }
+    },
+    {
+      id: 2,
+      email: "admin@mail.com",
+      password: "admin123",
+      role: "admin",
+      paciente: { nombre: "Admin", apellido: "User", dni: "87654321" }
+    }
+  ];
+
+  // Simulate JWT creation
+  function createFakeJWT(user) {
+    const payload = {
+      id: user.id,
+      paciente: user.paciente,
+      role: user.role,
+      email: user.email,
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 // 1 hour expiry
+    };
+    // Simple base64 encoding (not secure, just for demo)
+    return btoa(JSON.stringify(payload));
+  }
+
   const login = async (userData) => {
     setErrorLogin(null);
-    try {
-      const response = await axiosInstance.post(
-        "/usuario/login",
-        userData
-      );
-      localStorage.setItem("token", response.data.token);
-      setUser(getUser(response.data.token));
+    // Find user in demoUsers
+    const found = demoUsers.find(
+      u => u.email === userData.email && u.password === userData.contraseña
+    );
+    if (found) {
+      const fakeToken = createFakeJWT(found);
+      localStorage.setItem("token", fakeToken);
+      setUser(getUser(fakeToken));
       setWasAuthenticated(true);
-    } catch (error) {
-        console.error("Error en AuthProvider:", error);
-        if (error.response && error.response.data && error.response.data.message) {
-            setErrorLogin(error.response.data.message);
-        } else {
-            setErrorLogin("Error de red o del servidor. Por favor, inténtalo de nuevo.");
-        }
-         throw error;
+    } else {
+      setErrorLogin("Email o contraseña incorrectos (demo)");
+      throw new Error("Email o contraseña incorrectos (demo)");
     }
   };
 
