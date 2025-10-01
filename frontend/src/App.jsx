@@ -3,6 +3,7 @@ import "./App.css";
 
 // Layout Components
 import MainLayout from "./components/layouts/MainLayout";
+import AuthLayout from "./components/layouts/AuthLayout";
 
 // Public Pages
 import Paciente from "./pages/Paciente" 
@@ -63,7 +64,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               
-              <Route path="/dashboard" element={<ProtectedRoute allowedRoles={["admin"]} />}>
+              <Route path="/dashboard" element={<AuthLayout />}>
                 <Route index element={<Dashboard />} />
                 <Route path="plantillaAnalisis" element={<PlantillasAdmin />} />
                 <Route path="turno" element={<TurnoAdmin />} />

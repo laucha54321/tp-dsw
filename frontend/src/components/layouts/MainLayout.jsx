@@ -27,12 +27,9 @@ const MainLayout = () => {
             <Drop className="drop" titulo="paciente" uno="Preparacion" dos="Gestion de Paciente" tres="Consultas" />
             <Drop className="drop" titulo="turno" uno="Gestion de Turnos" dos="Registrar Turno" tres="Resultados"/>
             <Drop className="drop" titulo="laboratorio" uno="Centros de Atencion" dos="Presupuestos" tres="Politicas"/>
-            {(isAuthenticated() && user.role==="admin")  && (
-              <>
-                <Link to="/dashboard" className="dashboard-btn">
-                Dashboard
-              </Link>
-            </>)}
+            <Link to="/dashboard" className="dashboard-btn">
+              Dashboard
+            </Link>
             
             {isAuthenticated()  ? (
               <>
